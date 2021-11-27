@@ -1,0 +1,67 @@
+Lab 6 Steps:
+
+1. Download webserver.
+
+2. Disable ASLR:
+    user@host$:_> echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
+
+    [+] insert screenshot of disabling ASLR
+
+3. Start webserver-1 service with attached monitor to collect data:
+    user@host$:_> python3 process_monitor_unix.py
+
+    [+] insert screenshot of starting webserver
+
+4. Attack server with boofuzz script to collect coredumps for later usage:
+    user@host$:_> python3 causeCrash.py
+
+    [+] insert screenshot of causeCrash.py source code
+    [+] insert screenshot of starting attack
+    [+] insert screenshot of boofuzz running in web browser
+
+5. Once a core dump is generated, run ./webserver in gdb with a coredump:
+    user@host$:_> gdb ./webserver coredumps/someCoreDump
+
+    a. In gdb with the coredump, read and analyze the reason for the crash. This will
+        reveal the field that is vulnerable for buffer overflow.
+
+        [+] insert screenshot of gdb running ./webserver with core dump and reason for crash
+
+7. Close gdb, now run ./webserver as is without a core dump in gdb:
+    user@host$:_> gdb ./webserver
+
+    [+] insert screenshot of gdb running ./webserver
+
+    a. Start new attack to find address:
+    user@host$:_> python3 findAddress.py
+
+    [+] insert screenshot of findAddress.py source code
+    [+] insert screenshot of ./webserver crash
+
+    b. Pick and address within the nopsled:
+
+    [+] insert screenshot of ./webserver crash
+
+    c. Restart ./webserver in gdb:
+    gef:> r
+
+    [+] insert screenshot of gdb running ./webserver
+
+    d. Send attack to the server currently running in gdb:
+    user@host$:_> python3 injectCode.py
+
+    [+] insert screenshot of findAddress.py source code
+    [+] insert screenshot of ./webserver using "whoami" to show success
+
+8. Close gdb
+
+9. Run webserver without debugger:
+    user@host$:_> ./webserver
+
+    [+] insert screenshot of running ./webserver
+
+    a. Send attack to the server:
+    user@host$:_> python3 injectCode.py
+
+    [+] insert screenshot of findAddress.py source code
+    [+] insert screenshot of ./webserver using "whoami" to show success

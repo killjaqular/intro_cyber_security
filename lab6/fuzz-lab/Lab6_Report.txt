@@ -1,0 +1,18 @@
+Lab 6 Steps:
+
+1. Download webserver-1
+
+2. Install boofuzz:
+    user@host$:_> pip install boofuzz
+
+3. Install pwn:
+    user@host$:_> pip install pwn
+
+4. Disable ASLR:
+    user@host$:_> echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
+
+5. Start webserver-1 service with attached monitor to collect data:
+    user@host$:_> python3 process_monitor_unix.py
+
+6. Attack server with boofuzz script to collect coredumps for later usage:
+    user@host$:_> python3 causeCrash.py
